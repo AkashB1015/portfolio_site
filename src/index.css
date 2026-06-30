@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Theme Variables Setup */
+@layer base {
+  :root {
+    /* Light Theme space-separated RGB values */
+    --color-base-950: 250 248 244;   /* #FAF8F4 */
+    --color-base-900: 255 255 255;   /* #FFFFFF */
+    --color-base-800: 240 237 230;   /* #F0EDE6 */
+    --color-line: 221 215 204;       /* #DDD7CC */
+    --color-ink-100: 23 21 19;       /* #171513 */
+    --color-ink-400: 107 101 92;     /* #6B655C */
+    --color-accent-ember: 232 93 44;  /* #E85D2C */
+    --color-accent-gold: 201 148 31;  /* #C9941F */
+    --color-accent-teal: 14 148 136;  /* #0E9488 */
+  }
+
+  html.dark {
+    /* Dark Theme space-separated RGB values (Default) */
+    --color-base-950: 11 13 15;     /* #0B0D0F */
+    --color-base-900: 19 22 26;     /* #13161A */
+    --color-base-800: 28 33 39;     /* #1C2127 */
+    --color-line: 42 47 54;         /* #2A2F36 */
+    --color-ink-100: 244 242 237;   /* #F4F2ED */
+    --color-ink-400: 168 163 154;   /* #A8A39A */
+    --color-accent-ember: 255 107 53; /* #FF6B35 */
+    --color-accent-gold: 232 184 75;  /* #E8B84B */
+    --color-accent-teal: 45 212 191;  /* #2DD4BF */
+  }
+
+  body {
+    background-color: rgb(var(--color-base-950));
+    color: rgb(var(--color-ink-100));
+    font-family: 'Inter', 'Satoshi', sans-serif;
+    transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Clash Display', sans-serif;
+  }
+
+  /* Smooth color/bg transitions globally */
+  main, section, div, header, nav, footer, a, button, input, select, textarea {
+    transition: background-color 300ms ease, border-color 300ms ease, color 300ms ease;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--color-base-950));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-line));
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--color-accent-ember));
+}
+
+/* Lenis Smooth Scroll Configuration */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Noise overlay for tactile premium texture */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  content: "";
+  opacity: 0.035; /* Subtle noise in dark (~3.5%) */
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  transition: opacity 300ms ease;
+}
+
+/* Lighter noise overlay in light theme for cleanliness */
+html:not(.dark) .noise-overlay {
+  opacity: 0.012; 
+}
+
+/* Grid overlay background linked to custom colors */
+.grid-bg {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(var(--color-line), 0.15) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(var(--color-line), 0.15) 1px, transparent 1px);
+}
+
+/* Hide standard scrollbar but keep functionality if needed */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Glow Accent Highlight Utilities */
+.glow-effect {
+  position: relative;
+}
+.glow-effect::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 15px rgba(var(--color-accent-ember), 0.15);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.glow-effect:hover::after {
+  opacity: 1;
+}
+
+/* Card 3D Flip Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* Underline draw animation for hero */
+.draw-underline {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation: draw 1.5s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  animation-delay: 1.2s;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Ember text shadow glowing animation loop */
+@keyframes glowPulse {
+  0%, 100% {
+    text-shadow: 0 0 4px rgba(var(--color-accent-ember), 0.1);
+  }
+  50% {
+    text-shadow: 0 0 16px rgba(var(--color-accent-ember), 0.6), 0 0 24px rgba(var(--color-accent-ember), 0.2);
+  }
+}
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* Timeline flow pulse animation */
+@keyframes travelingPulse {
+  0% {
+    top: -20%;
+  }
+  100% {
+    top: 120%;
+  }
+}
+.timeline-pulse {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, rgba(var(--color-accent-ember), 0.8), transparent);
+  animation: travelingPulse 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 1.5s;
+}
